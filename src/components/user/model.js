@@ -1,8 +1,8 @@
 const fs = require('fs');
-let students = require('./test.json');
+let students = require('./db.json');
 
-function writeFile() {
-    fs.writeFile("./src/components/user/test.json", JSON.stringify(students, null, 4), (err) => {
+const writeFile = () => {
+    fs.writeFile("./src/components/user/db.json", JSON.stringify(students, null, 4), (err) => {
         if (err)
           console.log(err);
         else {
@@ -11,22 +11,19 @@ function writeFile() {
     });
 }
 
-exports.getStudentByEmail = function(email) {
-    return students.find(student => student.email === email);
-}
+exports.readStudentByEmail = (email) => students.find(student => student.email === email);
 
-exports.addNewStudent = function(newStudent) {
-    students.push(newStudent);
+exports.createStudent = (email, name) => {
+    students.push({email: email, name: name});
     writeFile();
 }
 
-exports.changeStudentNameByEmail = function(studentEmail, studentName) {
-    students[students.indexOf(this.getStudentByEmail(studentEmail))].name = studentName;
+exports.updateStudentByEmail = (email, name) => {
+    students[students.indexOf(this.readStudentByEmail(email))].name = name;
     writeFile();
 }
 
-exports.deleteStudentByEmail = function(email) {
+exports.deleteStudentByEmail = (email) => {
     students = students.filter(student => student.email !== email);
     writeFile();
 }
-
